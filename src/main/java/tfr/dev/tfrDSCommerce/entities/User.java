@@ -2,17 +2,16 @@ package tfr.dev.tfrDSCommerce.entities;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 
 
 @Entity
 @Table(name="tb_user")
-public class Users {
+public class User {
 	
 	
 	@Id
@@ -23,10 +22,13 @@ public class Users {
 	private String phone;
 	private LocalDate localDate;
 	private String password;
-	
-	public Users() {}
 
-	public Users(Long id, String name, String email, String phone, LocalDate localDate, String password) {
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<>();
+	
+	public User() {}
+
+	public User(Long id, String name, String email, String phone, LocalDate localDate, String password) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -83,7 +85,13 @@ public class Users {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
 
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
 }
