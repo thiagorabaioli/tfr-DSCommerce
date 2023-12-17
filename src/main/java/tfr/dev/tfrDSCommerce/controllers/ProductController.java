@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tfr.dev.tfrDSCommerce.dto.ProductDTO;
+import tfr.dev.tfrDSCommerce.entities.Product;
 import tfr.dev.tfrDSCommerce.services.ProductService;
 
 @RestController
@@ -28,6 +26,17 @@ public class ProductController {
     public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
         Page<ProductDTO> dto = service.findAll(pageable);
         return ResponseEntity.ok(dto);
+    }
+
+    @RequestMapping(value="/page", method=RequestMethod.GET)
+    public ResponseEntity<Page<ProductDTO>> findPage(
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
+            @RequestParam(value="orderBy", defaultValue="name") String orderBy,
+            @RequestParam(value="direction", defaultValue="ASC") String direction) {
+        Page<Product> list = service.findPage(page, linesPerPage, orderBy, direction);
+        Page<ProductDTO> listDto = list.map(obj -> new ProductDTO(obj));
+        return ResponseEntity.ok().body(listDto);
     }
 
 }

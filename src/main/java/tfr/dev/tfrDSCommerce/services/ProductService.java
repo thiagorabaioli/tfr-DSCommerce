@@ -3,12 +3,14 @@ package tfr.dev.tfrDSCommerce.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tfr.dev.tfrDSCommerce.dto.ProductDTO;
 import tfr.dev.tfrDSCommerce.entities.Product;
 import tfr.dev.tfrDSCommerce.repositories.ProductRepository;
+import org.springframework.data.domain.Sort.Direction;
 
 import java.util.Optional;
 
@@ -33,4 +35,10 @@ public class ProductService {
         return result.map(x -> new ProductDTO(x));
     }
 
-}
+    public Page<Product> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+         return repo.findAll(pageRequest);
+        }
+    }
+
+
