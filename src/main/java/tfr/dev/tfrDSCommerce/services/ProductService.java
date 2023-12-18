@@ -35,10 +35,26 @@ public class ProductService {
         return result.map(x -> new ProductDTO(x));
     }
 
+    @Transactional(readOnly = true)
     public Page<Product> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
          return repo.findAll(pageRequest);
         }
+
+        @Transactional
+        public ProductDTO insert(ProductDTO dto){
+        Product entity = new Product();
+        copyToDto(dto, entity);
+        entity = repo.save(entity);
+        return new ProductDTO(entity);
+        }
+
+      private void copyToDto(ProductDTO dto, Product entity){
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setPrice(dto.getPrice());
+        entity.setImgUrl(dto.getImgUrl());
+      }
     }
 
 
