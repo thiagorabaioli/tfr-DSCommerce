@@ -5,9 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tfr.dev.tfrDSCommerce.dto.ProductDTO;
 import tfr.dev.tfrDSCommerce.entities.Product;
 import tfr.dev.tfrDSCommerce.services.ProductService;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -37,6 +40,14 @@ public class ProductController {
         Page<Product> list = service.findPage(page, linesPerPage, orderBy, direction);
         Page<ProductDTO> listDto = list.map(obj -> new ProductDTO(obj));
         return ResponseEntity.ok().body(listDto);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto){
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
+
     }
 
 }
