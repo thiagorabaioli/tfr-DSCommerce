@@ -11,8 +11,7 @@ import tfr.dev.tfrDSCommerce.dto.ProductDTO;
 import tfr.dev.tfrDSCommerce.entities.Product;
 import tfr.dev.tfrDSCommerce.repositories.ProductRepository;
 import org.springframework.data.domain.Sort.Direction;
-
-import java.util.Optional;
+import tfr.dev.tfrDSCommerce.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -23,11 +22,12 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id){
-        Optional<Product> result = repo.findById(id);
-        Product product = result.get();
-        ProductDTO dto = new ProductDTO(product);
-        return dto;
-    }
+          Product entity = repo.findById(id).orElseThrow(
+                   ()-> new ResourceNotFoundException("invalid id"));
+           return new ProductDTO(entity);
+
+        }
+
 
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(Pageable pageable) {
