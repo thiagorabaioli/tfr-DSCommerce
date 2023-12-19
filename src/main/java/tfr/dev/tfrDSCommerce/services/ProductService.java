@@ -49,6 +49,17 @@ public class ProductService {
         return new ProductDTO(entity);
         }
 
+
+        @Transactional
+        public ProductDTO update(Long id, ProductDTO dto){
+        Product entity = repo.getReferenceById(id); // não vai ao BD. É monitorado pela JPA.
+        copyToDto(dto, entity);
+        entity = repo.save(entity);
+        return new ProductDTO(entity);
+
+
+        }
+
       private void copyToDto(ProductDTO dto, Product entity){
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
