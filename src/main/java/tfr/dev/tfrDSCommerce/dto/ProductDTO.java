@@ -1,13 +1,26 @@
 package tfr.dev.tfrDSCommerce.dto;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import tfr.dev.tfrDSCommerce.entities.Product;
 
 public class ProductDTO {
 
     private Long id;
+
+
+   @NotBlank(message = "can't be null")
+   @Size(min = 8, max = 80, message = "the name must belong to the range minimum 8 and maximum 80")
     private String name;
+
+    @NotBlank(message = "can't be null")
+    @Size(min = 8, message = "the name must have minimum 8 characters ")
     private String description;
+
+    @Positive
     private Double price;
     private String imgUrl;
 
