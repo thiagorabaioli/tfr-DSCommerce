@@ -2,7 +2,7 @@ package tfr.dev.tfrDSCommerce.dto;
 
 import java.time.Instant;
 
-public class CustomError {
+public class CustomErrorDTO {
 
     private Instant timeStamp;
     private Integer status;
@@ -10,7 +10,7 @@ public class CustomError {
     private String path;
 
 
-    public CustomError(Instant timeStamp, Integer status, String error, String path) {
+    public CustomErrorDTO(Instant timeStamp, Integer status, String error, String path) {
         this.timeStamp = timeStamp;
         this.status = status;
         this.error = error;
